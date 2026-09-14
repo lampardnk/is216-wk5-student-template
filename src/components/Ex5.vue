@@ -4,9 +4,25 @@ import { ref } from 'vue';
 const moods = ref(['Happy', 'Sad', 'Angry']);
 const subject = ref('');
 const entry = ref('');
-const mood = ref('');
+const mood = ref('Happy');
+const message = ref('');
 
-// Add Code Here
+
+async function submitPost() {
+    try {
+        await axios.post('http://localhost:8000/posts', {
+            subject: subject.value,
+            entry: entry.value,
+            mood: mood.value
+        });
+        message.value = 'Post created successfully!';
+        subject.value = '';
+        entry.value = '';
+        mood.value = 'Happy';
+    } catch (error) {
+        message.value = 'Error: ' + error.message;
+    }
+}
 
 
 </script>
@@ -23,14 +39,20 @@ const mood = ref('');
         <br>
 
         Mood:
-        <!-- TODO: Build a dropdown list here for selecting the mood -->
+        <select v-model="mood">
+            <option v-for="m in moods" :key="m" :value="m">{{ m }}</option>
+        </select>
         <br>
 
         <br>
-        <button>Submit New Post</button>
+        <button @click="submitPost">Submit New Post</button>
+
+        <div v-if="message" style="margin-top: 8px;">
+            <p>{{ message }}</p>
+        </div>
 
         <hr>
-        <RouterLink to="/ViewPosts/">Click  here to return to Main Page</RouterLink>  
+        <RouterLink to="/ViewPosts/">Click here to return to View Posts</RouterLink>
        
     </div>
 </template>

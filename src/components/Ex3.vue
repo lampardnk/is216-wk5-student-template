@@ -6,8 +6,17 @@ const y = ref(0)
 const operators = ref(["+", "-", "*", "/", "%"])
 const selectedOp = ref("+")
 
-// TODO: Add Code Here
-// Note: DO NOT USE "eval()". In security, "eval" is considered "evil"!!!
+
+const result = computed(() => {
+    switch (selectedOp.value) {
+        case '+': return x.value + y.value
+        case '-': return x.value - y.value
+        case '*': return x.value * y.value
+        case '/': return y.value !== 0 ? x.value / y.value : 'Cannot divide by zero'
+        case '%': return y.value !== 0 ? x.value % y.value : 'Cannot divide by zero'
+        default: return 0
+    }
+})
 
     
 </script>
